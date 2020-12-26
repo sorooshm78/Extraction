@@ -1,2 +1,2 @@
 # Extraction
-Extraction from web and insert in exel file
+Extraction from web and insert in Excel file
