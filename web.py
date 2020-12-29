@@ -1,7 +1,8 @@
+from bs4 import BeautifulSoup
 import requests
-import re
 
-x = requests.get('https://www.digikala.com/search/category-mobile-phone/')
-page = x.text
-num = re.findall("Moto E6 Play", page)
-print(num)
+url = "https://www.tutorialspoint.com/index.htm"
+req = requests.get(url)
+soup = BeautifulSoup(req.text, "html.parser")
+
+print(soup.title)
