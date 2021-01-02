@@ -7,12 +7,12 @@ req = requests.get(url)
 soup = BeautifulSoup(req.text, "html.parser")
 content = soup.find("table", {"class":"main-body"})
 
-"""
 # header table
 for x in content.find_all("th"):
 	print("header:", x.string)
-"""
 
-# line 
-for x in content.find_all("td"):
-	print(x.string)
+# record table
+for record in content.find_all("tr"):
+	print("-----------------------")
+	for el in record.find_all("td"):
+		print(el.string)
