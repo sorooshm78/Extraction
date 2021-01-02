@@ -7,12 +7,26 @@ req = requests.get(url)
 soup = BeautifulSoup(req.text, "html.parser")
 content = soup.find("table", {"class":"main-body"})
 
+file = open("date.txt", "a")
+
 # header table
-for x in content.find_all("th"):
-	print("header:", x.string)
+for head in content.find_all("th"):
+	if head.string is not None:
+		file.write(head.string)
+		file.write("	")
+
+file.write("\n")
+
 
 # record table
 for record in content.find_all("tr"):
-	print("-----------------------")
 	for el in record.find_all("td"):
-		print(el.string)
+		if el.string is None:
+			file.write("	")
+		else:
+			file.write(el.string)
+			file.write("	 ")
+
+	file.write("\n")
+
+file.close()
