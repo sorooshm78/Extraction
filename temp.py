@@ -22,10 +22,12 @@ mycursor.execute("CREATE TABLE sch(id int)")
 # header table
 for head in content.find_all("th"):
     if head.string is not None:
+		print(head.string)
 		sql = "ALTER TABLE sch ADD (%s) char(255)"
 		var = head.string
 		mycursor.execute(sql, var)
        
+mydb.commit()
 
 mycursor.execute("SELECT * FROM sch")
 
