@@ -3,7 +3,7 @@ import requests
 
 
 # local table
-url ="<table><tr><th>First</th><th>Last</th><th>Age</th></tr><tr><td>Jill</td><td>Smith</td><td>50</td></tr><tr><td>Eve</td><td>Jackson</td><td>94</td></tr></table>"
+url ="<table><tr><th>name</th><th>riazy</th><th>araby</th></tr><tr><td>Jill</td><td>19</td><td>20</td></tr><tr><td>Eve</td><td>18</td><td>50</td></tr></table>"
 soup = BeautifulSoup(url, "html.parser")
 content = soup.find("table")
 

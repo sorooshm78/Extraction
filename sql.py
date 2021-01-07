@@ -7,10 +7,18 @@ mydb = mysql.connector.connect(
   database="sm"
 )
 
-mycursor = mydb.cursor()
+cursor = mydb.cursor()
 
-#mycursor.execute("SHOW TABLES")
-mycursor.execute("SELECT * FROM person")
 
-for x in mycursor:
-  print(x)
+table_name = "per"
+
+sql_command = "SHOW TABLES LIKE \'%s\'" % table_name
+cursor.execute(sql_command)
+result = cursor.fetchone()
+
+if result:
+	print("exist")
+else:
+	print("not exist")
+ 
+cursor.close()
