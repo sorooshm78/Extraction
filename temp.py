@@ -16,25 +16,10 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-mycursor.execute("CREATE TABLE sch(id int)")
-
 # header table
 for head in content.find_all("th"):
 	if head.string is not None:
-		print(head.string)
-		sql = "ALTER TABLE sch ADD %s char(255)"
-		var = head.string
-		mycursor.execute(sql, var)
-       
+		sql = "ALTER TABLE sch ADD COLUMN %s varchar(255)" % head.string
+		mycursor.execute(sql)
+
 mydb.commit()
-
-mycursor.execute("SELECT * FROM sch")
-
-for x in mycursor:
-  print(x)
-
-"""
-# record table
-for record in content.find_all("tr"):
-    for el in record.find_all("td"):
-"""
