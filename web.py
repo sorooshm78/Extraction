@@ -16,7 +16,7 @@ soup = BeautifulSoup(req.text, "html.parser")
 content = soup.find("table", {"class":"main-body"})
 """
 
-file = open("date.txt", "a")
+file = open("date.txt", "w")
 
 # header table
 for head in content.find_all("th"):
