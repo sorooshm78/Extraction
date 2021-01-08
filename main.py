@@ -1,29 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import mysql.connector
-
-# *************************** setting ***************************
-url = "<table><tr><th>name</th><th>riazy</th><th>araby</th></tr><tr><td>Jill</td><td>19</td><td>20</td></tr><tr><td>Eve</td><td>18</td><td>50</td></tr></table>"
-database_name = "sm"
-table_name = "pop"
-#username
-#password
-
-# *************************** html config ***************************
-soup = BeautifulSoup(url, "html.parser")
-html = soup.find("table")
-header = html.find_all("th")
-record = html.find_all("tr")
-
-# mysql config
-mydb = mysql.connector.connect(
-  host = "localhost",
-  user = ***,
-  password = ***,
-  database = database_name
-)
-
-mycursor = mydb.cursor()
+import re
 
 # *************************** function ***************************
 def check_exist(sql, word):
@@ -42,6 +20,35 @@ def exist(sql):
 	else:
 		return False
 	
+def find_file(word):
+        f = open("pass.txt", "r")
+        txt = f.read()
+        s = re.findall(word + " =.*", txt)
+        return s[0].replace(word + " = ","")
+
+# *************************** setting ***************************
+url = "<table><tr><th>name</th><th>riazy</th><th>araby</th></tr><tr><td>Jill</td><td>19</td><td>20</td></tr><tr><td>Eve</td><td>18</td><td>50</td></tr></table>"
+database_name = "sm"
+table_name = "pop"
+username = find_file("username")
+password = find_file("password")
+
+# *************************** html config ***************************
+soup = BeautifulSoup(url, "html.parser")
+html = soup.find("table")
+header = html.find_all("th")
+record = html.find_all("tr")
+
+# mysql config
+mydb = mysql.connector.connect(
+  host = "localhost",
+  user = username,
+  password = password,
+  database = database_name
+)
+
+mycursor = mydb.cursor()
+
 print("*************************** check exist table ***************************")
 
 sql_command = "SHOW TABLES LIKE \'%s\'" % table_name

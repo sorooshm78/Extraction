@@ -1,17 +1,20 @@
 import mysql.connector
+import re
 
 
-f = open("/home/soroush/Desktop/work/Extraction/date.txt", "r")
-line = f.readline()
-for x in line:
-	print(x)
-"""
-  mydb = mysql.connector.connect(
-  host="localhost",
-  user=***,
-  password=***,
-  database="sm"
+def find_file(word):
+	f = open("pass.txt", "r")
+	txt = f.read()
+	s = re.findall(word + " =.*", txt)
+	return s[0].replace(word + " = ","")
+
+
+
+mydb = mysql.connector.connect(
+host="localhost",
+user=find_file("username"),
+password=find_file("password"),
+database="sm"
 )
 
 cursor = mydb.cursor()
-"""
