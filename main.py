@@ -21,19 +21,21 @@ def exist(sql):
 		return False
 	
 def find_file(word):
-        f = open("pass.txt", "r")
-        txt = f.read()
-        s = re.findall(word + " =.*", txt)
-        return s[0].replace(word + " = ","")
+	f = open("pass.txt", "r")
+	txt = f.read()
+	s = re.findall(word + ".*=.*", txt)
+	return s[0].replace(" ","").replace(word + "=","")
 
 # *************************** setting ***************************
-url = "<table><tr><th>name</th><th>riazy</th><th>araby</th></tr><tr><td>Jill</td><td>19</td><td>20</td></tr><tr><td>Eve</td><td>18</td><td>50</td></tr></table>"
-database_name = "sm"
-table_name = "pop"
+
+url = find_file("url")
+database_name = find_file("database")
+table_name = find_file("table")
 username = find_file("username")
 password = find_file("password")
 
 # *************************** html config ***************************
+
 soup = BeautifulSoup(url, "html.parser")
 html = soup.find("table")
 header = html.find_all("th")
@@ -48,6 +50,13 @@ mydb = mysql.connector.connect(
 )
 
 mycursor = mydb.cursor()
+
+print("*************************** check exist database ***************************")
+
+
+
+
+
 
 print("*************************** check exist table ***************************")
 
@@ -80,6 +89,7 @@ for x in range(1, len(record)):
 		mycursor.execute(sql_command)
 
 print("*************************** insert header table ***************************")
+
 for x in range(1, len(header)):
 		column = header[x].string
 		sql = "SHOW COLUMNS FROM %s LIKE \"%s\"" %(table_name, column)
@@ -100,7 +110,7 @@ for x in range(1, len(record)):
 	for y in range(1, len(el)):	
 		column = header[y].string
 		val_column = el[y].string
-		sql_command = "UPDATE pop SET %s = %s WHERE %s = \"%s\"" % (column, val_column, id, val_id)
+		sql_command = "UPDATE %s SET %s = %s WHERE %s = \"%s\"" % (table_name, column, val_column, id, val_id)
 		print(sql_command)
 		mycursor.execute(sql_command)
 
