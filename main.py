@@ -4,6 +4,7 @@ import mysql.connector
 import re
 
 # *************************** function ***************************
+
 def check_exist(sql, word):
 	mycursor.execute(sql)
 	result = mycursor.fetchall()
@@ -33,30 +34,44 @@ database_name = find_file("database")
 table_name = find_file("table")
 username = find_file("username")
 password = find_file("password")
+host = find_file("host")
 
 # *************************** html config ***************************
 
+# web url
+#req = requests.get(url)
+#soup = BeautifulSoup(req, "html.parser")
+
+# local url
 soup = BeautifulSoup(url, "html.parser")
+
 html = soup.find("table")
 header = html.find_all("th")
 record = html.find_all("tr")
 
 # mysql config
 mydb = mysql.connector.connect(
-  host = "localhost",
+  host = host,
   user = username,
   password = password,
-  database = database_name
 )
 
 mycursor = mydb.cursor()
 
 print("*************************** check exist database ***************************")
 
+sql_command = "SHOW DATABASES LIKE \'%s\'" % database_name
 
+if exist(sql_command):
+	print("database exist")
+else:
+	print("database not exist")
+	sql_command = "CREATE DATABASE %s" %(database_name)
+	print(sql_command)
+	mycursor.execute(sql_command)
 
-
-
+sql = "USE %s" % database_name
+mycursor.execute(sql)
 
 print("*************************** check exist table ***************************")
 
