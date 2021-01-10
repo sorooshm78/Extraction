@@ -108,8 +108,6 @@ for x in range(1, len(record)):
 
 print("*************************** insert header table ***************************")
 
-print("len head" ,len(header))
-
 for x in range(1, len(header)):
 		column = header[x].string
 		sql = "SHOW COLUMNS FROM `%s` LIKE \"%s\"" %(table_name, column)
