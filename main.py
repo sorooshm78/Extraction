@@ -39,11 +39,12 @@ host = find_file("host")
 # *************************** html config ***************************
 
 # web url
-#req = requests.get(url)
-#soup = BeautifulSoup(req, "html.parser")
+req = requests.get(url)
+soup = BeautifulSoup(req.text, "html.parser")
+
 
 # local url
-soup = BeautifulSoup(url, "html.parser")
+#soup = BeautifulSoup(url, "html.parser")
 
 html = soup.find("table")
 header = html.find_all("th")
@@ -88,7 +89,7 @@ else:
 
 print("*************************** check name exist ***************************")
 
-for x in range(1, len(record)):
+for x in range(1, len(record) - 1):
 	el = record[x].find_all("td")
 	val_id = el[0].string
 	id = header[0].string
@@ -102,10 +103,12 @@ for x in range(1, len(record)):
 		sql_command = "INSERT INTO %s (%s) VALUES (\"%s\")"% (table_name, id, val_id)
 		print(sql_command)
 		mycursor.execute(sql_command)
+		mydb.commit()
+
 
 print("*************************** insert header table ***************************")
 
-for x in range(1, len(header)):
+for x in range(1, len(header) - 1):
 		column = header[x].string
 		sql = "SHOW COLUMNS FROM %s LIKE \"%s\"" %(table_name, column)
 
@@ -113,20 +116,22 @@ for x in range(1, len(header)):
 			print(column + " column is exist")
 		else:
 			print(column + " column is not exist")
-			sql_command = "ALTER TABLE %s ADD COLUMN %s INT" % (table_name, column)
+			sql_command = "ALTER TABLE %s ADD COLUMN `%s` VARCHAR(255)" % (table_name, column)
 			print(sql_command)
 			mycursor.execute(sql_command)
+			mydb.commit()
 
 print("*************************** insert record table ***************************")
-for x in range(1, len(record)):
+for x in range(1, len(record) - 1):
 	el = record[x].find_all("td")
 	val_id = el[0].string
 
 	for y in range(1, len(el)):	
 		column = header[y].string
 		val_column = el[y].string
-		sql_command = "UPDATE %s SET %s = %s WHERE %s = \"%s\"" % (table_name, column, val_column, id, val_id)
+#		sql_command = "UPDATE %s SET %s = \"%s\" WHERE %s = \"%s\"" % (table_name, column, val_column, id, val_id)
+		sql_command = "UPDATE %s SET `%s` = \"%s\" WHERE %s = \"%s\"" % (table_name, column, val_column, id, val_id)
+
 		print(sql_command)
 		mycursor.execute(sql_command)
-
-mydb.commit()
+		mydb.commit()
