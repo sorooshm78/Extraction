@@ -1,4 +1,0 @@
-name	riazy	araby	
-
-Jill	19	20	
-Eve	18	50	
